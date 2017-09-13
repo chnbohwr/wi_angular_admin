@@ -15,6 +15,36 @@ export const PAGES_MENU = [
         }
       },
       {
+        path: 'robots',
+        data: {
+          menu: {
+            title: 'general.menu.robot',
+            icon: 'ion-social-reddit-outline',
+            selected: false,
+            expanded: false,
+            order: 50
+          }
+        },
+        children: [
+          {
+            path: 'robot-management',
+            data: {
+              menu: {
+                title: 'general.menu.robot_management'
+              }
+            }
+          },
+          {
+            path: 'robot-routemap',
+            data: {
+              menu: {
+                title: 'general.menu.robot_routemap'
+              }
+            }
+          }
+        ]
+      },
+      {
         path: 'editors',
         data: {
           menu: {

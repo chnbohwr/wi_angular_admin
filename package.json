@@ -25,7 +25,7 @@
     "build:prod": "npm run build -- --prod",
     "build:prod:aot": "npm run build:prod -- --aot",
     "build:ci": "npm run build:prod && npm run build:prod:aot",
-    "build:demo": "npm run build:prod:aot -- --base-href \"http://akveo.com/ng2-admin/\"",
+    "build:demo": "npm run build:prod:aot -- --base-href \"https://chnbohwr.github.io/wi_angular_admin/\"",
     "test": "ng test -sr",
     "test:coverage": "npm run clean:coverage && ng test -sr -cc",
     "lint": "ng lint",
@@ -37,7 +37,8 @@
     "clean:dist": "npm run rimraf -- dist",
     "clean:coverage": "npm run rimraf -- coverage",
     "docs:deploy": "wintersmith build -C docs && gh-pages -d docs/build",
-    "docs:serve": "wintersmith preview -C docs"
+    "docs:serve": "wintersmith preview -C docs",
+    "gh-pages": "npm run build:demo && gh-pages -d dist"
   },
   "private": true,
   "dependencies": {

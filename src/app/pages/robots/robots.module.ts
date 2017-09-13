@@ -12,7 +12,7 @@ import { RobotRoutemap } from './components/robot-routemap/robot-routemap.compon
   imports: [
     CommonModule,
     FormsModule,
-    NgaModule
+    NgaModule,
     routing,
   ],
   declarations: [

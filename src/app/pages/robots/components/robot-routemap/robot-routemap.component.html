@@ -1,3 +1,12 @@
-<p>
-  robot-routemap works!
-</p>
+<div>
+  <p>
+    robot-routemap works
+  </p>
+  <button (click)="updateCircle()"> click me</button>
+
+  <ngvas [width]="500" [height]="500">
+    <ng-template ngFor let-circle [ngForOf]="circles">
+    <ngvas-circle [fill]="'#e5efd2'" [x]="circle.x" [y]="circle.y" [radius]="5" origin="center"></ngvas-circle>
+  </ng-template>
+  </ngvas>
+</div>

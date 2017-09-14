@@ -112,7 +112,7 @@ const NGA_VALIDATORS = [
     FormsModule,
     ReactiveFormsModule,
     AppTranslationModule,
-    NgUploaderModule
+    NgUploaderModule,
   ],
   exports: [
     ...NGA_PIPES,

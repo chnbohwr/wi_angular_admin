@@ -6,7 +6,7 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { DataTableModule } from "angular2-datatable";
 import { HttpModule } from "@angular/http";
 import { DataFilterPipe } from './components/dataTables/data-filter.pipe';
-import { HotTable, HotTableModule } from 'ng2-handsontable';
+import { HotTableModule } from 'ng2-handsontable';
 
 import { routing } from './tables.routing';
 import { Tables } from './tables.component';

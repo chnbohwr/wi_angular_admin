@@ -17,6 +17,8 @@ export class RobotManagement implements AfterViewInit {
   points: Array<IPoint> = [];
 
   robotPositions = [];
+  position_index = 0;
+  animation_id = null;
 
   translatePos = position => ({
     x: 620 + position.y * 28,
@@ -38,17 +40,28 @@ export class RobotManagement implements AfterViewInit {
     canvasEl.height = this.height;
   }
 
-  drawRoute() {
+  drawRoute = () => {
+    if (this.position_index > this.robotPositions.length) {
+      window.cancelAnimationFrame(this.animation_id)
+      return;
+    }
+
+    const speed = 10;
+    const positions = this.robotPositions.slice(this.position_index, this.position_index + speed);
+
     this.cx.beginPath();
-    const initialPosition = this.robotPositions[0];
+    const initialPosition = positions[0];
     this.cx.moveTo(initialPosition.x, initialPosition.y);
 
-    this.robotPositions.forEach(position => {
+    positions.forEach(position => {
       this.cx.lineTo(position.x, position.y);
     });
     this.cx.strokeStyle="red";
     this.cx.stroke();
     this.cx.closePath();
+
+    this.position_index += speed;
+    this.animation_id = window.requestAnimationFrame(this.drawRoute);
   }
 
   createPoints() {

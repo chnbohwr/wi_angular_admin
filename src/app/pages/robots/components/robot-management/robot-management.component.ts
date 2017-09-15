@@ -9,8 +9,8 @@ import Point, { IPoint } from './Point';
 export class RobotManagement implements AfterViewInit {
   @ViewChild('myCanvas') canvas: ElementRef;
 
-  @Input() width = 800;
-  @Input() height = 800;
+  @Input() width = 960;
+  @Input() height = 720;
 
   cx: CanvasRenderingContext2D;
   points: Array<IPoint> = [];

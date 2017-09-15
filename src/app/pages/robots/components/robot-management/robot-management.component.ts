@@ -9,7 +9,7 @@ export class RobotManagement implements AfterViewInit {
   @ViewChild('myCanvas') canvas: ElementRef;
 
   @Input() width = 800;
-  @Input() height = 700;
+  @Input() height = 800;
 
   cx: CanvasRenderingContext2D;
   points: Array<IPoint> = [];

@@ -1,5 +1,6 @@
 import { Component, Input, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import Point, { IPoint } from './Point';
+import { RobotJson } from './phraseFreqs';
 
 @Component({
   selector: 'app-robot-management',
@@ -15,9 +16,19 @@ export class RobotManagement implements AfterViewInit {
   cx: CanvasRenderingContext2D;
   points: Array<IPoint> = [];
 
+  robotPositions = [];
+
+  translatePos = position => ({
+    x: 620 + position.y * 28,
+    y: 255 + position.x * 22
+  });
+
   ngAfterViewInit() {
-    this.initialCanvas();
-    this.createPoints();
+    console.log(RobotJson);
+    this.robotPositions = RobotJson.map(this.translatePos);
+    console.log(this.robotPositions);
+    // this.initialCanvas();
+    // this.createPoints();
   }
 
   initialCanvas() {

@@ -17,6 +17,7 @@ export class RobotManagement implements AfterViewInit {
   points: Array<IPoint> = [];
 
   robotPositions = [];
+  positions = [];
   position_index = 0;
   speed: number = 20;
 
@@ -41,27 +42,36 @@ export class RobotManagement implements AfterViewInit {
   }
 
   drawRoute = () => {
+    this.cx.clearRect(0, 0, this.width, this.height);
+
     if (this.position_index > this.robotPositions.length) {
       this.position_index = 0;
-      this.cx.clearRect(0, 0, this.width, this.height);
+      this.positions = [];
       window.requestAnimationFrame(this.drawRoute);
       return;
     }
 
-    const positions = this.robotPositions.slice(this.position_index, this.position_index + this.speed);
+    this.positions = [
+      ...this.positions,
+      ...this.robotPositions.slice(this.position_index, this.position_index + this.speed),
+    ];
 
-    const initialPosition = positions[0];
-    this.cx.moveTo(initialPosition.x, initialPosition.y);
+    const firstPosition = this.positions[0];
+    const lastPosition = this.positions[this.positions.length - 1];
 
+    // draw line
     this.cx.beginPath();
-
-    positions.forEach(position => {
-      // draw line
+    this.positions.forEach(position => {
       this.cx.lineTo(position.x, position.y);
-      this.cx.strokeStyle="red";
-      this.cx.stroke();
     });
+    this.cx.strokeStyle="red";
+    this.cx.stroke();
 
+    // draw icon
+    this.cx.beginPath();
+    this.cx.arc(lastPosition.x, lastPosition.y, 5, 0, 2 * Math.PI);
+    this.cx.fillStyle = 'blue';
+    this.cx.fill();
 
     this.position_index += this.speed;
     window.requestAnimationFrame(this.drawRoute);

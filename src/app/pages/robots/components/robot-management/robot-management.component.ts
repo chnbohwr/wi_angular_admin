@@ -18,6 +18,7 @@ export class RobotManagement implements AfterViewInit {
 
   robotPositions = [];
   position_index = 0;
+  speed: number = 20;
 
   translatePos = position => ({
     x: 620 + position.y * 28,
@@ -47,21 +48,22 @@ export class RobotManagement implements AfterViewInit {
       return;
     }
 
-    const speed = 10;
-    const positions = this.robotPositions.slice(this.position_index, this.position_index + speed);
+    const positions = this.robotPositions.slice(this.position_index, this.position_index + this.speed);
 
-    this.cx.beginPath();
     const initialPosition = positions[0];
     this.cx.moveTo(initialPosition.x, initialPosition.y);
 
-    positions.forEach(position => {
-      this.cx.lineTo(position.x, position.y);
-    });
-    this.cx.strokeStyle="red";
-    this.cx.stroke();
-    this.cx.closePath();
+    this.cx.beginPath();
 
-    this.position_index += speed;
+    positions.forEach(position => {
+      // draw line
+      this.cx.lineTo(position.x, position.y);
+      this.cx.strokeStyle="red";
+      this.cx.stroke();
+    });
+
+
+    this.position_index += this.speed;
     window.requestAnimationFrame(this.drawRoute);
   }
 

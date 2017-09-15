@@ -20,15 +20,14 @@ export class RobotManagement implements AfterViewInit {
 
   translatePos = position => ({
     x: 620 + position.y * 28,
-    y: 255 + position.x * 22
+    y: 255 + position.x * 29
   });
 
   ngAfterViewInit() {
-    console.log(RobotJson);
     this.robotPositions = RobotJson.map(this.translatePos);
-    console.log(this.robotPositions);
-    // this.initialCanvas();
+    this.initialCanvas();
     // this.createPoints();
+    this.drawRoute();
   }
 
   initialCanvas() {
@@ -37,6 +36,19 @@ export class RobotManagement implements AfterViewInit {
 
     canvasEl.width = this.width;
     canvasEl.height = this.height;
+  }
+
+  drawRoute() {
+    this.cx.beginPath();
+    const initialPosition = this.robotPositions[0];
+    this.cx.moveTo(initialPosition.x, initialPosition.y);
+
+    this.robotPositions.forEach(position => {
+      this.cx.lineTo(position.x, position.y);
+    });
+    this.cx.strokeStyle="red";
+    this.cx.stroke();
+    this.cx.closePath();
   }
 
   createPoints() {

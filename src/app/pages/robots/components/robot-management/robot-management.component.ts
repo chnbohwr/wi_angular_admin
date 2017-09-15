@@ -1,4 +1,5 @@
 import { Component, Input, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import Point, { IPoint } from './Point';
 
 @Component({
   selector: 'app-robot-management',
@@ -27,53 +28,35 @@ export class RobotManagement implements AfterViewInit {
     canvasEl.height = this.height;
   }
 
-  drawPoint = (point: IPoint) => {
-    this.cx.beginPath();
-    this.cx.arc(point.x, point.y, 5, 0, 2 * Math.PI);
-    this.cx.fillStyle = point.color;
-    this.cx.fill();
-    this.cx.closePath();
-  }
-
   createPoints() {
     for (let i = 0; i < 1000; i++) {
-      const point ={
-        x: Math.floor(Math.random() * (this.width + 1)),
-        y: Math.floor(Math.random() * (this.height + 1)),
-        color: `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`,
+      const x = Math.floor(Math.random() * (this.width + 1));
+      const y = Math.floor(Math.random() * (this.height + 1));
+      const color = `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
+      const canvas = {
+        cx: this.cx,
+        width: this.width,
+        height: this.height,
       };
 
+      const point = new Point(canvas, x, y, color);
+      point.drawPoint();
+
       this.points.push(point);
-      this.drawPoint(point);
     }
   }
 
-  updatePoint = () => {
+  animate = () => {
+    // clear canvas render
     this.cx.clearRect(0, 0, this.width, this.height);
-    this.points = this.points.map(point => {
-      let x = point.x + Math.floor(Math.random() * 3) * (Math.random() > 0.5 ? 1 : -1);
-      let y = point.y + Math.floor(Math.random() * 3) * (Math.random() > 0.5 ? 1 : -1);
 
-      if (x > this.width) x -= this.width;
-      if (x < 0) x += this.width;
-      if (y > this.height) y -= this.height;
-      if (y < 0) y += this.height;
-
-      const newPoint = {
-        ...point, x, y
-      }
-
-      this.drawPoint(newPoint);
-
-      return newPoint;
+    this.points.forEach((point) => {
+      point.updatePoint();
+      point.drawPoint();
     });
 
-    window.requestAnimationFrame(this.updatePoint);
+    window.requestAnimationFrame(this.animate);
   }
 }
 
-interface IPoint {
-  x: number,
-  y: number,
-  color: string,
-}
+

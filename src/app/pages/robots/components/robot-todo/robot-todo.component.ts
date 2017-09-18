@@ -5,5 +5,8 @@ import { Component } from '@angular/core';
   templateUrl: './robot-todo.component.html'
 })
 export class RobotTodo {
-
+  private num: number = 34;
+  private increment(): void {
+    this.num++;
+  }
 }

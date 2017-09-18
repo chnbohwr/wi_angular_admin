@@ -8,6 +8,7 @@ import { routing } from './robots.routing';
 import { Robots } from './robots.component';
 import { RobotManagement } from './components/robot-management/robot-management.component';
 import { RobotRoutemap } from './components/robot-routemap/robot-routemap.component';
+import { RobotTodo } from './components/robot-todo/robot-todo.component';
 
 @NgModule({
   imports: [
@@ -21,6 +22,7 @@ import { RobotRoutemap } from './components/robot-routemap/robot-routemap.compon
     Robots,
     RobotManagement,
     RobotRoutemap,
+    RobotTodo,
   ]
 })
 export class RobotsModule {

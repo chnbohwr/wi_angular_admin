@@ -41,6 +41,14 @@ export const PAGES_MENU = [
                 title: 'general.menu.robot_routemap'
               }
             }
+          },
+          {
+            path: 'robot-todo',
+            data: {
+              menu: {
+                title: 'general.menu.robot_todo'
+              }
+            }
           }
         ]
       },

@@ -15,6 +15,7 @@ import { RobotTodoList } from './components/robot-todo/robot-todo-list.component
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
     NgaModule,
     routing,
     NgvasModule,

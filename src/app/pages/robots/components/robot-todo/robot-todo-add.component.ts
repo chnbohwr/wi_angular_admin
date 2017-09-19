@@ -9,5 +9,6 @@ export class RobotTodoAdd {
   @Output() onAdd: EventEmitter<string> = new EventEmitter<string>();
   private clickAdd(): void {
     this.onAdd.emit(this.todoText);
+    this.todoText = '';
   }
 }

@@ -49,6 +49,14 @@ export const PAGES_MENU = [
                 title: 'general.menu.robot_todo'
               }
             }
+          },
+          {
+            path: 'robot-http',
+            data: {
+              menu: {
+                title: 'general.menu.robot_http'
+              }
+            }
           }
         ]
       },

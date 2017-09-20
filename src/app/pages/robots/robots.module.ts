@@ -1,3 +1,4 @@
+import { RobotHttp } from './components/robot-http/robot-http.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -12,6 +13,7 @@ import { RobotRoutemap } from './components/robot-routemap/robot-routemap.compon
 import { RobotTodo } from './components/robot-todo/robot-todo.component';
 import { RobotTodoAdd } from './components/robot-todo/robot-todo-add.component';
 import { RobotTodoList } from './components/robot-todo/robot-todo-list.component';
+import { RobotHi } from './components/robot-hi/robot-hi.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -27,6 +29,8 @@ import { RobotTodoList } from './components/robot-todo/robot-todo-list.component
     RobotTodo,
     RobotTodoAdd,
     RobotTodoList,
+    RobotHi,
+    RobotHttp,
   ]
 })
 export class RobotsModule {

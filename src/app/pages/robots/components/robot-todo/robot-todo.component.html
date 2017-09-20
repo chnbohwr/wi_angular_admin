@@ -1,4 +1,6 @@
 <div>
   <app-todo-add (onAdd)="addTodo($event)"></app-todo-add>
   <app-todo-list [list]="todos"></app-todo-list>
+
+  <router-outlet></router-outlet>
 </div>

@@ -53,7 +53,8 @@
       "robot": "Robots",
       "robot_management": "Management",
       "robot_routemap": "Route Map",
-      "robot_todo": "Robot Todo"
+      "robot_todo": "Robot Todo",
+      "robot_http": "Robot Http"
     },
     "created_with": "Created with"
   },

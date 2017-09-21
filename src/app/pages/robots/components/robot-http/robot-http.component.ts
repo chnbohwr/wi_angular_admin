@@ -7,8 +7,21 @@ import { Component, OnInit } from '@angular/core';
   providers: [RobotHttpService]
 })
 export class RobotHttp implements OnInit {
+  private posts = [];
   constructor(private robotService: RobotHttpService) { }
+  httpError(e) {
+    console.log('====================================');
+    console.log(e);
+    console.log('====================================');
+  }
   ngOnInit() {
-    console.log(this.robotService);
+
+    this.robotService.getFullPost()
+      .subscribe(data => {
+        // this.posts = data;
+        console.log('============sucess!!================');
+        console.log(data);
+        console.log('====================================');
+      }, this.httpError);
   }
 }

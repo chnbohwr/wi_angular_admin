@@ -1,8 +1,15 @@
 <div>
-<div>this is http page</div>
+<h3>http 訊息</h3>
 <ul>
   <li *ngFor="let post of posts">
-    {{post.id}}-{{post.title}}-{{post.author}}
+    <div>{{post.id}}-{{post.title}}-{{post.author}}</div>
+    <ul>
+      <li *ngFor="let comment of post.comments">{{comment.body}}</li>
+    </ul>
   </li>
+</ul>
+<h3>Socket 接收訊息</h3>
+<ul>
+  <li *ngFor="let text of sockets">{{text}}</li>
 </ul>
 </div>

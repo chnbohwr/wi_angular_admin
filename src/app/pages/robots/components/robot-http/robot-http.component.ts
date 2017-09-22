@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RobotHttp implements OnInit {
   private posts = [];
+  private sockets = [];
   constructor(private robotService: RobotHttpService) { }
   httpError(e) {
     console.log('====================================');
@@ -21,7 +22,16 @@ export class RobotHttp implements OnInit {
         // this.posts = data;
         console.log('============sucess!!================');
         console.log(data);
+        this.posts = data;
         console.log('====================================');
       }, this.httpError);
+
+    this.robotService.socket.getDataStream()
+      .subscribe(msg => {
+        console.log('===========socket success====================');
+        console.log(msg.data);
+        this.sockets.unshift(msg.data);
+        console.log('====================================');
+      }, this.httpError)
   }
 }

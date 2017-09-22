@@ -1,3 +1,4 @@
+import { $WebSocket } from 'angular2-websocket/angular2-websocket';
 import { BaScrollPosition } from './../../../../theme/directives/baScrollPosition/baScrollPosition.directive';
 import { Http, Response } from '@angular/http';
 import { Injectable } from '@angular/core';
@@ -10,7 +11,6 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/toArray';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/observable/from';
-
 
 interface Post {
   id: number;
@@ -35,7 +35,12 @@ interface FullPost {
 export class RobotHttpService {
   public name: string = 'hyman';
   private baseurl = 'http://localhost:3000';
-  constructor(private http: Http) { }
+  private baseSocketUrl = 'ws://localhost:7777/';
+  public socket;
+  constructor(private http: Http) {
+    this.socket = new $WebSocket(this.baseSocketUrl, ['echo-protocol']);
+    console.log(this.socket);
+  }
   getComment(postId: number): Observable<Comment[]> {
     return this.http.get(`${this.baseurl}/comments?postId=${postId}`)
       .map((res: Response) => res.json())

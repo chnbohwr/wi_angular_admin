@@ -57,6 +57,14 @@ export const PAGES_MENU = [
                 title: 'general.menu.robot_http'
               }
             }
+          },
+          {
+            path: 'robot-form',
+            data: {
+              menu: {
+                title: 'general.menu.robot_form'
+              }
+            }
           }
         ]
       },

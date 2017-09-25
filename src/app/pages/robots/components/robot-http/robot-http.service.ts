@@ -34,11 +34,11 @@ interface FullPost {
 @Injectable()
 export class RobotHttpService {
   public name: string = 'hyman';
-  private baseurl = 'http://localhost:3000';
-  private baseSocketUrl = 'ws://localhost:7777/';
+  private baseurl = 'http://localhost:3000/';
+  private baseSocketUrl = 'ws://192.168.17.76:3000/websocket';
   public socket;
   constructor(private http: Http) {
-    this.socket = new $WebSocket(this.baseSocketUrl, ['echo-protocol']);
+    this.socket = new $WebSocket(this.baseSocketUrl);
     console.log(this.socket);
   }
   getComment(postId: number): Observable<Comment[]> {

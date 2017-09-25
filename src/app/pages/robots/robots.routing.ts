@@ -1,3 +1,4 @@
+import { RobotFormComponent } from './components/robot-form/robot-form.component';
 import { RobotHttp } from './components/robot-http/robot-http.component';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -22,6 +23,10 @@ const routes: Routes = [
           { path: 'robot-hi', component: RobotHi },
         ]
       },
+      {
+        path: 'robot-form',
+        component: RobotFormComponent,
+      }
     ]
   }
 ];

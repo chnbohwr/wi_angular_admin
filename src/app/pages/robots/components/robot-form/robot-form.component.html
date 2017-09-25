@@ -1,0 +1,55 @@
+<div class="container">
+  <h1>template driven form</h1>
+  <form #myForm="ngForm">
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" class="form-control" id="email" name="email" placeholder="Email" ngModel>
+    </div>
+    <div class="errors">
+      <p>請輸入帳號</p>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" class="form-control" id="password" name="password" placeholder="Password" ngModel>
+    </div>
+    <div class="errors">
+      <p>請輸入密碼</p>
+    </div>
+    <div class="checkbox">
+      <label>
+        <input id="remember" name="remember" type="checkbox" ngModel> Remember me
+      </label>
+    </div>
+    <button type="submit" class="btn btn-default">Login</button>
+  </form>
+
+  <div style="margin-top: 20px;">
+    {{ myForm.value | json }}
+  </div>
+
+
+  <h1>modal driven form</h1>
+  <form [formGroup]="superForm">
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" formControlName="email" class="form-control" id="email" name="email" placeholder="Email">
+    </div>
+    <div class="errors">
+      <p>請輸入帳號</p>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" formControlName="password" class="form-control" id="password" name="password" placeholder="Password">
+    </div>
+    <div class="errors">
+      <p>請輸入密碼</p>
+    </div>
+    <div class="checkbox">
+      <label>
+        <input id="remember" formControlName="remember" name="remember" type="checkbox"> Remember me
+      </label>
+    </div>
+    <button type="submit" class="btn btn-default">Login</button>
+  </form>
+
+</div>

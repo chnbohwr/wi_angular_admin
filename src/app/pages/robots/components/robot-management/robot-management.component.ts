@@ -1,11 +1,13 @@
 import { Component, Input, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { RobotHttpService } from '../robot-http/robot-http.service';
 import Point, { IPoint } from './Point';
-import { RobotJson } from './phraseFreqs';
+import {Observable} from 'rxjs/Rx';
 
 @Component({
   selector: 'app-robot-management',
   templateUrl: './robot-management.component.html',
-  styleUrls: ['./robot-management.component.scss']
+  styleUrls: ['./robot-management.component.scss'],
+  providers: [RobotHttpService],
 })
 export class RobotManagement implements AfterViewInit {
   @ViewChild('myCanvas') canvas: ElementRef;
@@ -20,6 +22,9 @@ export class RobotManagement implements AfterViewInit {
   positions = [];
   position_index = 0;
   speed: number = 20;
+  private sockets = [];
+
+  constructor(private robotService: RobotHttpService){}
 
   translatePos = position => ({
     x: 620 + position.y * 28,
@@ -27,10 +32,35 @@ export class RobotManagement implements AfterViewInit {
   });
 
   ngAfterViewInit() {
-    this.robotPositions = RobotJson.map(this.translatePos);
+
+    this.robotService.getPollingData()
+      .subscribe(data => {
+        console.log(data);
+      });
+
+    // this.subscribeSocket();
+    // this.robotPositions = RobotJson.map(this.translatePos);
     this.initialCanvas();
     // this.createPoints();
-    this.drawRoute();
+    // this.drawRoute();
+  }
+
+  httpError(e) {
+    console.log('====================================');
+    console.log(e);
+    console.log('====================================');
+  }
+
+  subscribeSocket() {
+    this.robotService.getDataStream()
+      .subscribe(msg => {
+        const location = msg.data.message && msg.data.message.location;
+        if (location) this.sockets.unshift(this.translatePos(location));
+      }, this.httpError);
+
+    this.robotService.socket.onOpen(() => {
+      this.robotService.subscribeChannel().concat(this.robotService.showData(true)).subscribe();
+    });
   }
 
   initialCanvas() {

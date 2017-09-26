@@ -15,13 +15,8 @@ export class RobotManagement implements AfterViewInit, OnDestroy {
   @Input() width = 960;
   @Input() height = 720;
 
-  cx: CanvasRenderingContext2D;
-
-  robotPositions = [];
-  positions = [];
-  position_index = 0;
-  speed: number = 20;
-  private sockets = [];
+  private cx: CanvasRenderingContext2D;
+  private robotPositions = [];
   private _destroy$: Subject<boolean> = new Subject();
 
   constructor(private robotService: RobotHttpService) {}

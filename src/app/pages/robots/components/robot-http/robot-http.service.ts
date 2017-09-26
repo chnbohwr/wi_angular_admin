@@ -28,7 +28,7 @@ interface FullPost {
 export class RobotHttpService {
   public name: string = 'hyman';
   private baseurl = 'http://localhost:3000/';
-  private baseSocketUrl = 'ws://192.168.17.76:3000/cable';
+  private baseSocketUrl = 'ws://192.168.21.240:30018/cable';
   private websocketSetting: WebSocketConfig = {
     initialTimeout: 500,
     maxTimeout: 300000,
@@ -61,7 +61,7 @@ export class RobotHttpService {
   subscribeChannel(): Observable<any> {
     const sendData = {
       command: 'subscribe',
-      identifier: JSON.stringify({ channel: 'RobotsChannel' })
+      identifier: JSON.stringify({ channel: 'RobotsChannel', roomId: 'sadfjiowe' })
     };
     return this.socket
       .send4Observable(JSON.stringify(sendData))
@@ -72,13 +72,16 @@ export class RobotHttpService {
   showData(isShowData: boolean): Observable<any> {
     const data = {
       command: 'message',
-      identifier: JSON.stringify({ channel: 'RobotsChannel' }),
-      data: JSON.stringify({ message: `${isShowData ? 'start' : 'stop'}`, action: 'show' })
+      identifier: JSON.stringify({ channel: 'RobotsChannel', roomId: 'sadfjiowe' }),
+      data: JSON.stringify({ message: `${isShowData ? 'start' : 'stop'}`, action: 'show', roomId: 'sadfjiowe' })
     };
     return this.socket
       .send4Observable(JSON.stringify(data))
-      .do(qq => { console.log('showdata', qq); })
       .catch((e: any) => Observable.throw(e));
+  }
+
+  test() {
+    return Observable.interval(100).map(() => this.showData(true));
   }
 
   getDataStream() {
@@ -86,7 +89,8 @@ export class RobotHttpService {
       .getDataStream()
       .map(event => {
         return { ...event, data: JSON.parse(event.data) };
-      }).filter(event => (event.data.type !== 'ping'));
+      })
+      .filter(event => (event.data.type !== 'ping'));
     // return this.socket.getDataStream();
   }
 }

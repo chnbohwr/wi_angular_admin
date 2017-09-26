@@ -38,7 +38,7 @@ export class RobotHttp implements OnInit {
       }, this.httpError);
 
     this.robotService.socket.onOpen(() => {
-      this.robotService.subscribeChannel().concat(this.robotService.showData(true)).subscribe();
+      this.robotService.subscribeChannel().concat(this.robotService.test()).subscribe();
     });
   }
 }

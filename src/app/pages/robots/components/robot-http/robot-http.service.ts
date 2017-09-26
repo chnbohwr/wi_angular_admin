@@ -72,7 +72,7 @@ export class RobotHttpService {
   subscribeChannel(): Observable<any> {
     const sendData = {
       command: 'subscribe',
-      identifier: JSON.stringify({ channel: 'RobotsChannel', roomId: 'sadfjiowe' })
+      identifier: JSON.stringify({ channel: 'RobotsChannel', roomId: 'robbbbbb' })
     };
     return this.socket
       .send4Observable(JSON.stringify(sendData))
@@ -83,8 +83,8 @@ export class RobotHttpService {
   showData(isShowData: boolean): Observable<any> {
     const data = {
       command: 'message',
-      identifier: JSON.stringify({ channel: 'RobotsChannel', roomId: 'sadfjiowe' }),
-      data: JSON.stringify({ message: `${isShowData ? 'start' : 'stop'}`, action: 'show', roomId: 'sadfjiowe' })
+      identifier: JSON.stringify({ channel: 'RobotsChannel', roomId: 'robbbbbb' }),
+      data: JSON.stringify({ message: `${isShowData ? 'start' : 'stop'}`, action: 'show', roomId: 'robbbbbb' })
     };
     return this.socket
       .send4Observable(JSON.stringify(data))
@@ -92,7 +92,7 @@ export class RobotHttpService {
   }
 
   test() {
-    return Observable.interval(100).map(() => this.showData(true));
+    return Observable.interval(2).map(() => this.showData(true));
   }
 
   getDataStream() {

@@ -7,7 +7,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
 export class RobotTodoAdd {
   public todoText: string = '';
   @Output() onAdd: EventEmitter<string> = new EventEmitter<string>();
-  private clickAdd(): void {
+  public clickAdd(): void {
     this.onAdd.emit(this.todoText);
     this.todoText = '';
   }

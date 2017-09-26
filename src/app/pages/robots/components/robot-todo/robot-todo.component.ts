@@ -5,8 +5,8 @@ import { Component } from '@angular/core';
   templateUrl: './robot-todo.component.html'
 })
 export class RobotTodo {
-  private todos: Array<string> = ['buy a apple', 'go to home'];
-  private addTodo(todo: string): void {
+  public todos: Array<string> = ['buy a apple', 'go to home'];
+  public addTodo(todo: string): void {
     this.todos.push(todo);
   }
 }

@@ -62,7 +62,7 @@ export class RobotManagement implements AfterViewInit, OnDestroy {
     this.robotService.socket.onOpen(() => {
       this.robotService
         .subscribeChannel()
-        .concat(this.robotService.test())
+        .concat(this.robotService.showData(true))
         .takeUntil(this._destroy$)
         .subscribe();
     });

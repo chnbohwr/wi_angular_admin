@@ -84,7 +84,7 @@ export class RobotHttpService {
     const data = {
       command: 'message',
       identifier: JSON.stringify({ channel: 'RobotsChannel', roomId: 'Andy' }),
-      data: JSON.stringify({ message: `${isShowData ? 'start' : 'stop'}`, action: 'show', roomId: 'Andy' })
+      data: JSON.stringify({ action: `${isShowData ? 'show' : 'stop'}`, roomId: 'Andy', message: '' })
     };
     return this.socket
       .send4Observable(JSON.stringify(data))

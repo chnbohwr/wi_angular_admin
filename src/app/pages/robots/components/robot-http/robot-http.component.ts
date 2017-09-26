@@ -1,14 +1,17 @@
+import { Observable } from 'rxjs/Rx';
 import { RobotHttpService } from './robot-http.service';
-import { Component, OnInit } from '@angular/core';
-import 'rxjs/add/operator/concat';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+
 @Component({
   selector: 'app-robot-http',
   templateUrl: './robot-http.component.html',
   providers: [RobotHttpService]
 })
-export class RobotHttp implements OnInit {
-  private posts = [];
-  private sockets = [];
+export class RobotHttp implements OnInit, OnDestroy {
+  public posts = [];
+  public sockets = [];
+  private dataStream$;
+  private sendStream$;
   constructor(private robotService: RobotHttpService) { }
   httpError(e) {
     console.log('====================================');
@@ -16,29 +19,23 @@ export class RobotHttp implements OnInit {
     console.log('====================================');
   }
   ngOnInit() {
-
-    // this.robotService.getFullPost()
-    //   .subscribe(data => {
-    //     // this.posts = data;
-    //     console.log('============sucess!!================');
-    //     console.log(data);
-    //     this.posts = data;
-    //     console.log('====================================');
-    //   }, this.httpError);
-
-    // const sendChannel = this.robotService.socket.send()
-
-    // this.robotService.subscribeChannel().subscribe((q) => {
-    //   console.log('success send data,', q);
-    // });
-
-    this.robotService.getDataStream()
+    this.dataStream$ = this.robotService.getDataStream()
       .subscribe(msg => {
         this.sockets.unshift(msg.data);
+        this.sockets = this.sockets.slice(0,20);
       }, this.httpError);
 
     this.robotService.socket.onOpen(() => {
-      this.robotService.subscribeChannel().concat(this.robotService.test()).subscribe();
+      this.sendStream$ = this.robotService.subscribeChannel()
+        .concat(this.robotService.test())
+        .subscribe();
+      console.log(this.sendStream$);
     });
+  }
+
+  ngOnDestroy() {
+    console.log('destroy');
+    this.dataStream$.complete();
+    this.sendStream$.complete();
   }
 }

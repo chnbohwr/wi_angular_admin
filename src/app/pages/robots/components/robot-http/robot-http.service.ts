@@ -29,6 +29,7 @@ export class RobotHttpService {
   public name: string = 'hyman';
   private baseurl = 'http://localhost:3000/';
   private baseSocketUrl = 'ws://192.168.21.240:30018/cable';
+  private restfulUrl = 'http://192.168.21.240:30014/welcome/say_hello';
   private websocketSetting: WebSocketConfig = {
     initialTimeout: 500,
     maxTimeout: 300000,
@@ -38,9 +39,19 @@ export class RobotHttpService {
   constructor(private http: Http) {
     console.log(this);
   }
+  getPollingData(duration: number = 2000): Observable<any> {
+    const request = this.http.get(this.restfulUrl)
+      .map((response: Response) => response.json())
+      .catch((e: any) => Observable.throw(e));
+
+    return Observable
+      .interval(duration)
+      .switchMap(() => request);
+  }
+
   getComment(postId: number): Observable<Comment[]> {
     return this.http.get(`${this.baseurl}/comments?postId=${postId}`)
-      .map((res: Response) => res.json())
+      .map((response: Response) => response.json())
       .catch((e: any) => Observable.throw(e));
   }
 

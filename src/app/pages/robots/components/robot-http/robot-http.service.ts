@@ -40,13 +40,13 @@ export class RobotHttpService {
     console.log(this);
   }
   getPollingData(duration: number = 2000): Observable<any> {
-    const request = this.http.get(this.restfulUrl)
+    const request = () => this.http.get(this.restfulUrl)
       .map((response: Response) => response.json())
       .catch((e: any) => Observable.throw(e));
 
     return Observable
       .interval(duration)
-      .switchMap(() => request);
+      .switchMap(request);
   }
 
   getComment(postId: number): Observable<Comment[]> {
@@ -72,7 +72,7 @@ export class RobotHttpService {
   subscribeChannel(): Observable<any> {
     const sendData = {
       command: 'subscribe',
-      identifier: JSON.stringify({ channel: 'RobotsChannel', roomId: 'robbbbbb' })
+      identifier: JSON.stringify({ channel: 'RobotsChannel', roomId: 'Andy' })
     };
     return this.socket
       .send4Observable(JSON.stringify(sendData))
@@ -83,8 +83,8 @@ export class RobotHttpService {
   showData(isShowData: boolean): Observable<any> {
     const data = {
       command: 'message',
-      identifier: JSON.stringify({ channel: 'RobotsChannel', roomId: 'robbbbbb' }),
-      data: JSON.stringify({ message: `${isShowData ? 'start' : 'stop'}`, action: 'show', roomId: 'robbbbbb' })
+      identifier: JSON.stringify({ channel: 'RobotsChannel', roomId: 'Andy' }),
+      data: JSON.stringify({ message: `${isShowData ? 'start' : 'stop'}`, action: 'show', roomId: 'Andy' })
     };
     return this.socket
       .send4Observable(JSON.stringify(data))
@@ -92,7 +92,7 @@ export class RobotHttpService {
   }
 
   test() {
-    return Observable.interval(2).map(() => this.showData(true));
+    return Observable.interval(1).map(() => this.showData(true));
   }
 
   getDataStream() {

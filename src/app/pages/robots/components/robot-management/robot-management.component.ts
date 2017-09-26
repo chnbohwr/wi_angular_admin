@@ -1,7 +1,7 @@
-import { Component, Input, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, Input, ElementRef, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { RobotHttpService } from '../robot-http/robot-http.service';
-import Point, { IPoint } from './Point';
-import {Observable} from 'rxjs/Rx';
+import { Observable, Subject } from 'rxjs/Rx';
+import { RobotJson } from './phraseFreqs';
 
 @Component({
   selector: 'app-robot-management',
@@ -9,22 +9,17 @@ import {Observable} from 'rxjs/Rx';
   styleUrls: ['./robot-management.component.scss'],
   providers: [RobotHttpService],
 })
-export class RobotManagement implements AfterViewInit {
+export class RobotManagement implements AfterViewInit, OnDestroy {
   @ViewChild('myCanvas') canvas: ElementRef;
 
   @Input() width = 960;
   @Input() height = 720;
 
-  cx: CanvasRenderingContext2D;
-  points: Array<IPoint> = [];
+  private cx: CanvasRenderingContext2D;
+  private robotPositions = [];
+  private _destroy$: Subject<boolean> = new Subject();
 
-  robotPositions = [];
-  positions = [];
-  position_index = 0;
-  speed: number = 20;
-  private sockets = [];
-
-  constructor(private robotService: RobotHttpService){}
+  constructor(private robotService: RobotHttpService) {}
 
   translatePos = position => ({
     x: 620 + position.y * 28,
@@ -32,17 +27,8 @@ export class RobotManagement implements AfterViewInit {
   });
 
   ngAfterViewInit() {
-
-    this.robotService.getPollingData()
-      .subscribe(data => {
-        console.log(data);
-      });
-
-    // this.subscribeSocket();
-    // this.robotPositions = RobotJson.map(this.translatePos);
     this.initialCanvas();
-    // this.createPoints();
-    // this.drawRoute();
+    this.subscribeSocket();
   }
 
   httpError(e) {
@@ -51,15 +37,34 @@ export class RobotManagement implements AfterViewInit {
     console.log('====================================');
   }
 
+  ngOnDestroy() {
+    this._destroy$.next(true);
+    this._destroy$.complete();
+  }
+
   subscribeSocket() {
-    this.robotService.getDataStream()
+    this.robotService
+      .getDataStream()
+      .takeUntil(this._destroy$)
+      .filter(msg => msg.data.message)
       .subscribe(msg => {
-        const location = msg.data.message && msg.data.message.location;
-        if (location) this.sockets.unshift(this.translatePos(location));
+        const data = msg.data.message;
+
+        if (data.finalPoint) {
+          this.robotPositions = [];
+        } else {
+          this.robotPositions.push(this.translatePos(data.location));
+        }
+
+        this.drawRoute();
       }, this.httpError);
 
     this.robotService.socket.onOpen(() => {
-      this.robotService.subscribeChannel().concat(this.robotService.showData(true)).subscribe();
+      this.robotService
+        .subscribeChannel()
+        .concat(this.robotService.test())
+        .takeUntil(this._destroy$)
+        .subscribe();
     });
   }
 
@@ -74,67 +79,21 @@ export class RobotManagement implements AfterViewInit {
   drawRoute = () => {
     this.cx.clearRect(0, 0, this.width, this.height);
 
-    if (this.position_index > this.robotPositions.length) {
-      this.position_index = 0;
-      this.positions = [];
-      window.requestAnimationFrame(this.drawRoute);
-      return;
-    }
-
-    this.positions = [
-      ...this.positions,
-      ...this.robotPositions.slice(this.position_index, this.position_index + this.speed),
-    ];
-
-    const firstPosition = this.positions[0];
-    const lastPosition = this.positions[this.positions.length - 1];
-
     // draw line
     this.cx.beginPath();
-    this.positions.forEach(position => {
+    this.robotPositions.forEach(position => {
       this.cx.lineTo(position.x, position.y);
     });
-    this.cx.strokeStyle="red";
+    this.cx.strokeStyle = "red";
     this.cx.stroke();
+
+    const lastPosition = this.robotPositions[this.robotPositions.length - 1];
 
     // draw icon
     this.cx.beginPath();
     this.cx.arc(lastPosition.x, lastPosition.y, 5, 0, 2 * Math.PI);
     this.cx.fillStyle = 'blue';
     this.cx.fill();
-
-    this.position_index += this.speed;
-    window.requestAnimationFrame(this.drawRoute);
-  }
-
-  createPoints() {
-    for (let i = 0; i < 1000; i++) {
-      const x = Math.floor(Math.random() * (this.width + 1));
-      const y = Math.floor(Math.random() * (this.height + 1));
-      const color = `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
-      const canvas = {
-        cx: this.cx,
-        width: this.width,
-        height: this.height,
-      };
-
-      const point = new Point(canvas, x, y, color);
-      point.drawPoint();
-
-      this.points.push(point);
-    }
-  }
-
-  animate = () => {
-    // clear canvas render
-    this.cx.clearRect(0, 0, this.width, this.height);
-
-    this.points.forEach((point) => {
-      point.updatePoint();
-      point.drawPoint();
-    });
-
-    window.requestAnimationFrame(this.animate);
   }
 }
 

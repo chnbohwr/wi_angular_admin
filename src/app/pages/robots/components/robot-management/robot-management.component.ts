@@ -43,13 +43,13 @@ export class RobotManagement implements AfterViewInit, OnDestroy {
   }
 
   subscribeSocket() {
+    // receive data & draw route
     this.robotService
       .getDataStream()
-      .takeUntil(this._destroy$)
       .filter(msg => msg.data.message)
-      .subscribe(msg => {
-        const data = msg.data.message;
-
+      .map(msg => msg.data.message)
+      .takeUntil(this._destroy$)
+      .subscribe(data => {
         if (data.finalPoint) {
           this.robotPositions = [];
         } else {
@@ -59,6 +59,7 @@ export class RobotManagement implements AfterViewInit, OnDestroy {
         this.drawRoute();
       }, this.httpError);
 
+    // subscribe
     this.robotService.socket.onOpen(() => {
       this.robotService
         .subscribeChannel()
